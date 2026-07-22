@@ -17,8 +17,9 @@ carpetas `/2026/[Fase]/[Especialidad]/` y carga el catálogo de 19 especialidade
 - Ser **Propietario (Owner)** del sitio de SharePoint destino.
 
 ### Ejecución
+El sitio destino ya viene configurado por defecto (`https://cchccl.sharepoint.com/sites/Administracion`):
 ```powershell
-./Provision-SharePoint.ps1 -SiteUrl "https://<tu-tenant>.sharepoint.com/sites/MantencionApoquindo"
+./Provision-SharePoint.ps1
 ```
 El script es **idempotente**: si lo corres dos veces no duplica listas ni registros.
 

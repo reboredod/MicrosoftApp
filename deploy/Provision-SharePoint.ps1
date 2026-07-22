@@ -19,12 +19,13 @@
       y luego conéctate con -ClientId. Alternativa sencilla: ejecutar todo desde Azure Cloud Shell.
 
 .EJEMPLO
-    ./Provision-SharePoint.ps1 -SiteUrl "https://<tu-tenant>.sharepoint.com/sites/MantencionApoquindo"
+    ./Provision-SharePoint.ps1
+    ./Provision-SharePoint.ps1 -SiteUrl "https://cchccl.sharepoint.com/sites/Administracion"
 #>
 
 param(
-    [Parameter(Mandatory = $true)]
-    [string]$SiteUrl
+    # Sitio destino CChC (Administración). Se puede sobreescribir al llamar el script.
+    [string]$SiteUrl = "https://cchccl.sharepoint.com/sites/Administracion"
 )
 
 $ErrorActionPreference = "Stop"

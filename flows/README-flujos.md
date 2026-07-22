@@ -1,7 +1,7 @@
 # Flujos de Power Automate — Mantenimiento CChC Apoquindo 2026
 
 Cuatro flujos. Créalos en https://make.powerautomate.com con el conector **SharePoint**
-(estándar, sin costo premium). Reemplaza `<SITE_URL>` por la URL de tu sitio en todos.
+(estándar, sin costo premium). Reemplaza `https://cchccl.sharepoint.com/sites/Administracion` por la URL de tu sitio en todos.
 
 > Convención: los nombres internos de columnas coinciden con los creados por
 > `deploy/Provision-SharePoint.ps1` (Fase, Frecuencia, MesesProgramados, Especialidad,
@@ -27,7 +27,7 @@ Cuatro flujos. Créalos en https://make.powerautomate.com con el conector **Shar
          *(referencia al Title de la especialidad del bucle externo)*
       3. **Componer** `RutaCarpeta` = `concat('DocumentosMantenimiento/', variables('varAnio'), '/', items('Aplicar_a_cada_uno')?['Fase']?['Value'], '/', items('Aplicar_a_cada_uno')?['Title'], '/', outputs('Componer_TituloMant'))`
       4. **Crear nueva carpeta** (SharePoint)
-         - Dirección del sitio: `<SITE_URL>`
+         - Dirección del sitio: `https://cchccl.sharepoint.com/sites/Administracion`
          - Lista/biblioteca: `DocumentosMantenimiento`
          - Ruta de carpeta: `outputs('Componer_RutaCarpeta')` sin el prefijo de biblioteca →
            usar `concat(variables('varAnio'), '/', items('Aplicar_a_cada_uno')?['Fase']?['Value'], '/', items('Aplicar_a_cada_uno')?['Title'], '/', outputs('Componer_TituloMant'))`
@@ -70,7 +70,7 @@ mantenimiento, escribe metadatos y devuelve el enlace.
 8. **Componer** `NombreFinal` =
    `concat(formatDateTime(outputs('Obtener_elemento_Mant')?['body/FechaProgramada'],'yyyy-MM-dd'), '_', outputs('Obtener_elemento_Esp')?['body/Title'], '_', triggerBody()?['text_2'], '_', outputs('Componer_Correlativo'), '.', outputs('Componer_Ext'))`
 9. **Crear archivo** (SharePoint)
-   - Sitio `<SITE_URL>` · Ruta de carpeta = `concat('DocumentosMantenimiento/', outputs('Componer_RutaCarpetaRel'))`
+   - Sitio `https://cchccl.sharepoint.com/sites/Administracion` · Ruta de carpeta = `concat('DocumentosMantenimiento/', outputs('Componer_RutaCarpetaRel'))`
    - Nombre = `outputs('Componer_NombreFinal')` · Contenido = `triggerBody()?['file']` (ArchivoContenido)
 10. **Actualizar propiedades de archivo** (SharePoint) `DocumentosMantenimiento`
     - Id = `body('Crear_archivo')?['ItemId']`
