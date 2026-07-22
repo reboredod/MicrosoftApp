@@ -26,7 +26,7 @@ El script es **idempotente**: si lo corres dos veces no duplica listas ni regist
 ### Si tu organización bloquea el login interactivo de PnP
 Registra una app de Entra ID una sola vez y conéctate con su ClientId:
 ```powershell
-Register-PnPEntraIDApp -ApplicationName "PnP-Mantenimiento" -Tenant "<tu-tenant>.onmicrosoft.com" -Interactive
+Register-PnPEntraIDApp -ApplicationName "PnP-Mantenimiento" -Tenant "cchccl.onmicrosoft.com" -Interactive
 ```
 Alternativa sin instalar nada local: ejecutar el script desde **Azure Cloud Shell**.
 

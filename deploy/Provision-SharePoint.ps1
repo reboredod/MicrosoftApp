@@ -15,7 +15,7 @@
     - Módulo PnP.PowerShell:   Install-Module PnP.PowerShell -Scope CurrentUser
     - Ser Propietario (Owner) del sitio de SharePoint destino.
     - Si tu organización bloquea el inicio de sesión interactivo de PnP, registra una app:
-        Register-PnPEntraIDApp -ApplicationName "PnP-Mantenimiento" -Tenant <tu-tenant>.onmicrosoft.com -Interactive
+        Register-PnPEntraIDApp -ApplicationName "PnP-Mantenimiento" -Tenant cchccl.onmicrosoft.com -Interactive
       y luego conéctate con -ClientId. Alternativa sencilla: ejecutar todo desde Azure Cloud Shell.
 
 .EJEMPLO
