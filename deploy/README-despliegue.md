@@ -41,6 +41,11 @@ Lists para cargar el catálogo. (En "Sí/No", la columna `Activa` acepta `Si`.)
 Así cualquier comprobante, orden de trabajo o informe se encuentra navegando SharePoint
 directamente, sin abrir la app.
 
-## Próximos pasos (en construcción)
-- `../flows/` — definiciones de los 4 flujos de Power Automate.
-- `../app/` — guía de construcción de la Power App (pantallas + fórmulas Power Fx).
+## Paso 2 — Flujos de Power Automate
+Ver `../flows/README-flujos.md`: FLX-GenerarPlanAnual, FLX-GuardarDocumento,
+FLX-Recordatorios y FLX-CierreMantenimiento (conector SharePoint estándar).
+
+## Paso 3 — Power App
+Ver `../app/App-BuildKit.md`: app canvas de 5 pantallas (cronograma tipo Gantt,
+lista filtrable, detalle con documentos, subida de archivos y correctivos) con todas
+las fórmulas Power Fx listas para copiar.

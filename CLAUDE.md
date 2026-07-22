@@ -41,5 +41,12 @@ Usuario → Power App (captura/consulta)
 - **Aplicación definida**: sistema de gestión de mantenimiento 2026 para el edificio CChC Apoquindo (Cámara Chilena de la Construcción). Responsable: Operaciones CChC - David Reboredo.
 - **Origen**: reemplaza la planilla Excel "Programa de Mantenimiento CChC Apoquindo" (carta Gantt 2025 con 3 fases: 1. Aseo, Higiene y Seguridad; 2. Infraestructura, Cocina y Control Centralizado; 3. Otros — ~17 especialidades con frecuencias Diario/Mensual/Trimestral/Semestral/Anual/Inspección).
 - **Solución diseñada**: Power App canvas (cronograma tipo Gantt + seguimiento + carga de documentos) + listas SharePoint (`Especialidades`, `Mantenimientos2026`) + biblioteca `DocumentosMantenimiento` con carpetas `/2026/[Fase]/[Especialidad]/[AAAA-MM - Título]/` y archivos nombrados `AAAA-MM-DD_[Especialidad]_[TipoDocumento]_[correlativo]` + 4 flujos de Power Automate (generar plan anual, guardar documento desde la app, recordatorios diarios, validación de cierre).
-- **Entregable actual**: `prompts/prompt-app-mantenimiento-2026.md` — prompt maestro para construir la solución con un agente de IA.
+- **Decisiones tomadas**: David es Propietario (Owner) del sitio SharePoint. Camino elegido: Power App canvas + SharePoint estándar (SIN Dataverse, sin licencias premium).
+- **Entregables construidos** (rama `claude/microsoft-ecosystem-expert-bhafkp`):
+  - `prompts/prompt-app-mantenimiento-2026.md` — prompt maestro.
+  - `deploy/Provision-SharePoint.ps1` — provisiona listas, biblioteca, columnas, índices, carpetas y catálogo (PnP PowerShell, idempotente). `deploy/especialidades-catalogo.csv` para carga manual. `deploy/README-despliegue.md`.
+  - `flows/README-flujos.md` — 4 flujos de Power Automate con expresiones exactas.
+  - `app/App-BuildKit.md` — app canvas de 5 pantallas con fórmulas Power Fx.
+- **Pendiente / a validar por David**: URL del sitio SharePoint (parámetro `-SiteUrl`), ejecutar el script, y validar meses programados con proveedores.
+- **Límite del entorno**: Claude NO tiene acceso al tenant M365 del usuario (no puede provisionar directamente); entrega activos desplegables (scripts + kits de construcción).
 - Rama de trabajo: `claude/microsoft-ecosystem-expert-bhafkp`.
