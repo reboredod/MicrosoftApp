@@ -1,0 +1,20 @@
+Title,Fase,Frecuencia,MesesProgramados,Proveedor,ContactoProveedor,Activa
+"Aseo, Higiene y Seguridad (general)","1. Aseo, Higiene y Seguridad",Diario,"01,02,03,04,05,06,07,08,09,10,11,12",,,Si
+"Lavado de Alfombra y Muebles","1. Aseo, Higiene y Seguridad",Semestral,"02,08",,,Si
+"Control de Plagas","1. Aseo, Higiene y Seguridad",Mensual,"01,02,03,04,05,06,07,08,09,10,11,12",,,Si
+"Mantención de Extintores","1. Aseo, Higiene y Seguridad",Anual,"07",,,Si
+"Mantenimiento Eléctrico","2. Infraestructura, Cocina y Control Centralizado",Semestral,"02,08",,,Si
+"Mantenimiento Clima","2. Infraestructura, Cocina y Control Centralizado",Trimestral,"03,06,09,12",,,Si
+"Mantenimiento Sanitario","2. Infraestructura, Cocina y Control Centralizado",Inspección,"02,05,08,11",,,Si
+"Mantenimiento Cortinas Roller","2. Infraestructura, Cocina y Control Centralizado",Semestral,"02,08",,,Si
+"Mantenimiento Puertas y Mamparas","2. Infraestructura, Cocina y Control Centralizado",Semestral,"01,07",,,Si
+"Mantenimiento Equipos de Cocina","2. Infraestructura, Cocina y Control Centralizado",Semestral,"01,07",,,Si
+"Mantenimiento Ductos de Cocina","2. Infraestructura, Cocina y Control Centralizado",Semestral,"05,11",,,Si
+"Mantenimiento Cocina Caliente","2. Infraestructura, Cocina y Control Centralizado",Trimestral,"02,05,08",,,Si
+"Mantenimiento Salva Escalera","2. Infraestructura, Cocina y Control Centralizado",Trimestral,"01,04,07,10",,,Si
+"Mantenimiento BMS","2. Infraestructura, Cocina y Control Centralizado",Trimestral,"01,04,07,10",,,Si
+"Dispensadores de Agua","3. Otros",Trimestral,"01,04,07,10",,,Si
+"Control de Acceso - Safecard","3. Otros",Mensual,"01,02,03,04,05,06,07,08,09,10,11,12",,,Si
+"PCI - ANSUL","3. Otros",Semestral,"04,10",,,Si
+"PCI - Detección (APLC)","3. Otros",Anual,"12",,,Si
+"PCI - Extinción (APLC)","3. Otros",Anual,"03,07,11",,,Si
