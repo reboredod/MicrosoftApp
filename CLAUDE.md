@@ -38,5 +38,8 @@ Usuario → Power App (captura/consulta)
 
 ## Estado del proyecto
 
-- El usuario aún no ha definido la aplicación concreta a construir. Cuando la defina, documentar aquí: objetivo, fuentes de datos, pantallas, flujos y agentes.
+- **Aplicación definida**: sistema de gestión de mantenimiento 2026 para el edificio CChC Apoquindo (Cámara Chilena de la Construcción). Responsable: Operaciones CChC - David Reboredo.
+- **Origen**: reemplaza la planilla Excel "Programa de Mantenimiento CChC Apoquindo" (carta Gantt 2025 con 3 fases: 1. Aseo, Higiene y Seguridad; 2. Infraestructura, Cocina y Control Centralizado; 3. Otros — ~17 especialidades con frecuencias Diario/Mensual/Trimestral/Semestral/Anual/Inspección).
+- **Solución diseñada**: Power App canvas (cronograma tipo Gantt + seguimiento + carga de documentos) + listas SharePoint (`Especialidades`, `Mantenimientos2026`) + biblioteca `DocumentosMantenimiento` con carpetas `/2026/[Fase]/[Especialidad]/[AAAA-MM - Título]/` y archivos nombrados `AAAA-MM-DD_[Especialidad]_[TipoDocumento]_[correlativo]` + 4 flujos de Power Automate (generar plan anual, guardar documento desde la app, recordatorios diarios, validación de cierre).
+- **Entregable actual**: `prompts/prompt-app-mantenimiento-2026.md` — prompt maestro para construir la solución con un agente de IA.
 - Rama de trabajo: `claude/microsoft-ecosystem-expert-bhafkp`.
