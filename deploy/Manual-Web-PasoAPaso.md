@@ -133,6 +133,9 @@ verifica que el entorno sea el de CChC). Crea los flujos siguiendo, paso a paso 
 2. **FLX-GuardarDocumento** (llamado desde la app) — permite subir documentos.
 3. **FLX-Recordatorios** (programado, diario 08:00) — avisos y marcado de atrasados.
 4. **FLX-CierreMantenimiento** (automatizado) — valida respaldo al marcar Ejecutado.
+5. **FLX-AvisoProgramacion** ⭐ (programado, configurable) — aviso anticipado por correo
+   para programar los mantenimientos **preventivos** antes de su fecha. Ajustas días de
+   anticipación, frecuencia y destinatarios a tu gusto.
 
 Cómo crear cada uno en la web:
 - **+ Crear** → elige el tipo (Flujo instantáneo / programado / automatizado según el doc).

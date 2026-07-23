@@ -117,3 +117,70 @@ mantenimiento, escribe metadatos y devuelve el enlace.
 
 > Para evitar correos repetidos, puedes añadir una columna `RespaldoValidado` (Sí/No) y
 > filtrar el disparador con *Condición de desencadenador*: `@not(equals(triggerBody()?['RespaldoValidado'], true))`.
+
+---
+
+## FLX-AvisoProgramacion  ⭐ (aviso anticipado para programar preventivos)
+**Tipo:** Programado (Recurrencia). Envía un correo con los mantenimientos **preventivos**
+que se acercan, para que los coordines/agendes con el proveedor con anticipación.
+**Diseñado para que lo configures a tu gusto:** todo lo ajustable está en el paso 2
+(marcado con 🔧). Cambias esos valores y el flujo se comporta distinto, sin tocar el resto.
+
+### Paso a paso
+
+1. **Recurrencia** (disparador *Periodicidad*)  🔧 **CONFIGURABLE**
+   - *Frecuencia* e *Intervalo*: p. ej. **Semana / 1** (una vez por semana) o **Día / 1** (diario).
+   - *Zona horaria:* `(UTC-04:00) Santiago`  ·  *Hora:* p. ej. **08:00**.
+   - *En estos días* (si elegiste Semana): p. ej. **Lunes**.
+   > Aquí defines CADA CUÁNTO se envía el aviso. Ejemplo típico: todos los lunes a las 08:00.
+
+2. **Inicializar variables** (estas son tus "perillas"):
+   - `varDiasAnticipacion` (Entero) = **15**  🔧 → con cuántos **días de anticipación** avisar.
+     (15 = te avisa de los preventivos que vencen dentro de los próximos 15 días.)
+   - `varDestinatarios` (Cadena) = **`david.reboredo@outlook.com`**  🔧 → separa varios con `;`
+     (p. ej. `david.reboredo@outlook.com;operaciones@cchc.cl`).
+   - `varAsunto` (Cadena) = **`Mantenimientos preventivos por programar`**  🔧
+
+3. **Componer** `Hoy` = `formatDateTime(convertFromUtc(utcNow(),'Pacific SA Standard Time'),'yyyy-MM-dd')`
+4. **Componer** `Limite` = `formatDateTime(addDays(convertFromUtc(utcNow(),'Pacific SA Standard Time'), variables('varDiasAnticipacion')),'yyyy-MM-dd')`
+5. **Obtener elementos** (SharePoint) — Lista `Mantenimientos2026`
+   - Dirección del sitio: `https://cchccl.sharepoint.com/sites/Administracion`
+   - *Filtro de consulta (ODATA):*
+     ```
+     TipoMantenimiento eq 'Preventivo' and Estado eq 'Programado' and FechaProgramada ge '@{outputs('Componer_Hoy')}' and FechaProgramada le '@{outputs('Componer_Limite')}'
+     ```
+6. **Condición:** `length(body('Obtener_elementos')?['value'])` **es mayor que** `0`.
+   En la rama **En caso afirmativo**:
+   1. **Crear tabla HTML** (Data Operations)
+      - *Desde:* `body('Obtener_elementos')?['value']`
+      - *Columnas → Personalizado:* Título = `item()?['Title']`, Especialidad = `item()?['Especialidad']?['Value']`,
+        Fecha programada = `item()?['FechaProgramada']`, Proveedor = `item()?['Proveedor']`.
+   2. **Enviar un correo electrónico (V2)** (Office 365 Outlook)
+      - *Para:* `variables('varDestinatarios')`
+      - *Asunto:* `variables('varAsunto')`
+      - *Cuerpo:* un texto introductorio + `body('Crear_tabla_HTML')`. Ejemplo:
+        ```
+        Estimado/a:
+        Los siguientes mantenimientos preventivos deben programarse con el proveedor
+        dentro de los próximos @{variables('varDiasAnticipacion')} días:
+        @{body('Crear_tabla_HTML')}
+        Favor coordinar fecha y dejar la orden de trabajo en la carpeta correspondiente.
+        ```
+
+### Cómo lo configuras "a gusto" (resumen)
+| Quiero cambiar… | Dónde | Cómo |
+|---|---|---|
+| Cada cuánto llega el aviso | Paso 1 (Recurrencia) | Frecuencia / Intervalo / Días / Hora |
+| Con cuántos días de anticipación | `varDiasAnticipacion` | Cambia el número (p. ej. 7, 15, 30) |
+| Quién lo recibe | `varDestinatarios` | Correos separados por `;` |
+| El asunto del correo | `varAsunto` | Escribe el texto que quieras |
+| Solo ciertas especialidades | Paso 5 (ODATA) | Añade `and Especialidad/Title eq 'Mantenimiento Clima'` |
+
+> **Opción avanzada — configurarlo desde una lista (sin abrir el flujo):** crea una lista
+> `ConfiguracionAvisos` con columnas `DiasAnticipacion` (número) y `Destinatarios` (texto),
+> y en vez de valores fijos, en el paso 2 usa *Obtener elemento* de esa lista. Así ajustas
+> los días y destinatarios editando la lista en SharePoint, sin entrar a Power Automate.
+
+> **Opción — botón en la app:** si quieres disparar el aviso manualmente desde la Power App
+> (además del envío programado), cambia el disparador a *PowerApps (V2)* en una copia del
+> flujo y agrega un botón `btnEnviarAvisos` con `FLXAvisoProgramacion.Run()` en su `OnSelect`.
