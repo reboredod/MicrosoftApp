@@ -3,6 +3,14 @@
 App **canvas** (formato tableta), conectada a SharePoint estándar. No requiere Dataverse
 ni licencia premium. Todas las fórmulas están listas para copiar y pegar.
 
+> ⚠️ **Separador de fórmulas según idioma del editor.** Las fórmulas de este documento
+> usan la sintaxis **en inglés** (coma `,` entre argumentos, punto y coma `;` entre
+> instrucciones). Si tu Power Apps está en **español** (u otro idioma con coma decimal),
+> el editor usa **`;` entre argumentos** y **`;;` entre instrucciones**. Regla de
+> traducción: cambia cada `,` por `;`, y cada `;` que separa instrucciones completas por
+> `;;`. Ej: `Set(a, 1); Set(b, 2)` → `Set(a; 1);; Set(b; 2)`. Power Apps guarda la fórmula
+> igual internamente; solo cambia cómo se escribe/ve según tu idioma.
+
 ## Arranque rápido (recomendado)
 1. En https://make.powerapps.com → **+ Crear** → **Aplicación en lienzo** → formato *Tableta*.
    (Atajo: desde tu lista `Mantenimientos2026` en SharePoint → **Integrar → Power Apps →
