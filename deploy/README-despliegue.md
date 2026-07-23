@@ -3,6 +3,15 @@
 Este directorio contiene los activos para levantar la solución en tu Microsoft 365.
 Orden recomendado: **1) SharePoint → 2) Flujos → 3) Power App**.
 
+## ¿Qué camino seguir?
+- **100% web (sin instalar nada):** sigue **`Manual-Web-PasoAPaso.md`**. Recomendado si
+  no quieres usar PowerShell. Crea todo desde el navegador.
+- **Automatizado (PowerShell):** usa `Provision-SharePoint.ps1` para el SharePoint (abajo)
+  y luego los flujos y la app. Más rápido si tienes PnP PowerShell.
+
+Ambos caminos terminan con los flujos (`../flows/`) y la app (`../app/`), que siempre se
+construyen en la web.
+
 ## Paso 1 — Provisionar SharePoint (automatizado)
 
 Crea las dos listas, la biblioteca, todas las columnas, índices, la estructura de
