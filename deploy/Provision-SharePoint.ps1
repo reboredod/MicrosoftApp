@@ -14,18 +14,23 @@
     - PowerShell 7 (pwsh).  Windows PowerShell 5.1 puede corromper los acentos.
     - Módulo PnP.PowerShell:   Install-Module PnP.PowerShell -Scope CurrentUser
     - Ser Propietario (Owner) del sitio de SharePoint destino.
-    - Si tu organización bloquea el inicio de sesión interactivo de PnP, registra una app:
-        Register-PnPEntraIDApp -ApplicationName "PnP-Mantenimiento" -Tenant cchccl.onmicrosoft.com -Interactive
-      y luego conéctate con -ClientId. Alternativa sencilla: ejecutar todo desde Azure Cloud Shell.
+    - ClientId: desde fines de 2024 PnP.PowerShell exige un -ClientId para el login
+      interactivo. Regístralo UNA vez (crea una app en Entra ID y te devuelve el ClientId):
+        Register-PnPEntraIDAppForInteractiveLogin -ApplicationName "PnP-Mantenimiento" -Tenant "cchccl.onmicrosoft.com"
+      Copia el "Client Id" que imprime y pásalo al script con -ClientId.
+      (Si tu organización bloquea el registro de apps, usa la guía manual en README-despliegue.md.)
 
 .EJEMPLO
-    ./Provision-SharePoint.ps1
-    ./Provision-SharePoint.ps1 -SiteUrl "https://cchccl.sharepoint.com/sites/Administracion"
+    ./Provision-SharePoint.ps1 -ClientId "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+    ./Provision-SharePoint.ps1 -SiteUrl "https://cchccl.sharepoint.com/sites/Administracion" -ClientId "..."
 #>
 
 param(
     # Sitio destino CChC (Administración). Se puede sobreescribir al llamar el script.
-    [string]$SiteUrl = "https://cchccl.sharepoint.com/sites/Administracion"
+    [string]$SiteUrl = "https://cchccl.sharepoint.com/sites/Administracion",
+
+    # ClientId de la app de Entra ID (ver PREREQUISITOS). Obligatorio para login interactivo.
+    [string]$ClientId
 )
 
 $ErrorActionPreference = "Stop"
@@ -33,7 +38,12 @@ $ErrorActionPreference = "Stop"
 # ---------------------------------------------------------
 # Conexión
 # ---------------------------------------------------------
-Connect-PnPOnline -Url $SiteUrl -Interactive
+if ($ClientId) {
+    Connect-PnPOnline -Url $SiteUrl -Interactive -ClientId $ClientId
+} else {
+    Write-Warning "No pasaste -ClientId. Intentando login interactivo (puede fallar en tenants modernos)."
+    Connect-PnPOnline -Url $SiteUrl -Interactive
+}
 Write-Host "== Conectado a $SiteUrl ==" -ForegroundColor Cyan
 
 # Funciones auxiliares -------------------------------------
