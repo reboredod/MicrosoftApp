@@ -81,7 +81,7 @@ C) Biblioteca de documentos "DocumentosMantenimiento" con esta estructura de car
 2. POWER APP (canvas, formato tableta)
 ════════════════════════════════════════
 
-Crea una app canvas llamada "Mantenimiento CChC Apoquindo" conectada a las listas y
+Crea una app canvas llamada "Mantenimiento CChC" conectada a las listas y
 biblioteca anteriores, con estas pantallas:
 
 P1. INICIO / CRONOGRAMA: réplica visual de la carta Gantt de la planilla original:

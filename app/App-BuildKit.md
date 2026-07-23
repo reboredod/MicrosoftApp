@@ -1,4 +1,4 @@
-# Power App "Mantenimiento CChC Apoquindo" — Kit de construcción
+# Power App "Mantenimiento CChC" — Kit de construcción
 
 App **canvas** (formato tableta), conectada a SharePoint estándar. No requiere Dataverse
 ni licencia premium. Todas las fórmulas están listas para copiar y pegar.
