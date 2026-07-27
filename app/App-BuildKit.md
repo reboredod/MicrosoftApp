@@ -34,6 +34,7 @@ Set(clrEjecucion,    RGBA(255, 214,  0, 1));     // amarillo = en ejecución
 Set(clrEjecutado,    RGBA(76, 175, 80, 1));      // verde = ejecutado
 Set(clrAtrasado,     RGBA(229, 57, 53, 1));      // rojo  = atrasado
 Set(clrReprogramado, RGBA(30, 136, 229, 1));     // azul  = reprogramado
+Set(clrCancelado,    RGBA(120, 120, 120, 1));    // gris oscuro = cancelado
 Set(clrVacio,        RGBA(245, 245, 245, 1));    // sin programación
 Set(clrCorporativo,  RGBA(0, 51, 102, 1));       // azul CChC (cabeceras)
 Set(varAnio, 2026);
@@ -102,6 +103,18 @@ ClearCollect(
 
 - Para que las celdas sepan a qué especialidad pertenecen, nombra el ámbito de la galería
   externa: `galEsp.Items = Especialidades As Esp`. Dentro de galMeses se usa `Esp.Title`.
+  **Al poner el alias `As Esp`, `ThisItem` deja de existir dentro de galEsp**: hay que
+  reemplazarlo por `Esp` en los controles que ya lo usaban (`Title2.Text = Esp.Title`,
+  `Rectangle2.Visible = Esp.IsSelected`). Dentro de galMeses `ThisItem` sí sigue válido y
+  se refiere al mes.
+- **Emparejar por ID, no por texto:** `Especialidad.Id = Esp.ID` es más robusto que comparar
+  títulos (inmune a tildes y espacios sobrantes).
+- **Diagnóstico rápido de colores:** si un color no calza, pon temporalmente
+  `lblCelda.Text = LookUp(colMant, Especialidad.Id = Esp.ID && Month(FechaProgramada) = ThisItem.N, Estado.Value)`
+  para ver en pantalla el estado que realmente encuentra cada celda. Un color que no aparece
+  suele ser una variable de color no definida en `OnStart`, no un fallo del LookUp.
+- **Botón Actualizar** (recomendado en el cronograma): `OnSelect = ClearCollect(colMant, Mantenimientos2026)`.
+  `colMant` es una copia en memoria y no se entera de los cambios hechos en SharePoint.
 
 **celda** (etiqueta `lblCelda` dentro de galMeses):
 - `lblCelda.Text = ThisItem.Etq`
@@ -115,6 +128,7 @@ With(
         "En Ejecución",  clrEjecucion,
         "Atrasado",      clrAtrasado,
         "Reprogramado",  clrReprogramado,
+        "Cancelado",     clrCancelado,
         "Programado",    clrProgramado,
         clrVacio
     )
