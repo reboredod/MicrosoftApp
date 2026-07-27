@@ -78,19 +78,38 @@ ClearCollect(
 - `galEsp.Items = SortByColumns(Especialidades, "Fase", Ascending, "Title", Ascending)`
 - Dentro: `lblEsp.Text = ThisItem.Title`  ·  `lblFase.Text = ThisItem.Fase.Value`
 
-**galMeses** (galería horizontal, DENTRO de galEsp) — 12 celdas por fila:
-- `galMeses.Items =`
-```powerfx
-ForAll(colMeses As M, { Mes: M.N, EspTitle: ThisItem.Title })
-```
-  *(aquí `ThisItem` es la especialidad del galería externa)*
+**galMeses** (galería horizontal **en blanco**, DENTRO de galEsp) — 12 celdas por fila:
+- `galMeses.Items = colMeses`  ← directo, sin `ForAll`
+
+> ⚠️ **Lecciones de construcción (probadas en el editor, julio 2026).** La galería anidada
+> es la parte más delicada del cronograma. Estos cinco puntos evitan horas de prueba y error:
+>
+> 1. **Inserta "Galería horizontal en blanco"**, no la normal: la normal trae Title/Subtitle/
+>    Image de relleno que hay que borrar.
+> 2. **Selecciona `galEsp` en el árbol ANTES de insertar**, para que la galería nazca dentro
+>    de la fila. Si queda como hermana, `ThisItem` apuntará a Especialidades y las columnas
+>    del mes no se reconocerán.
+> 3. **`WrapCount` ("Ajustar recuento") = 1.** En una galería *horizontal* WrapCount es el
+>    número de **filas**: ponerlo en 10 reparte los 12 meses en 10 filas superpuestas.
+> 4. **Da ancho y alto FIJOS a la etiqueta interna** (p. ej. `Width = 70`, `Height = 30`).
+>    Con `Parent.TemplateWidth` la etiqueta puede quedar del ancho completo de la galería y
+>    **tapar las otras 11 celdas**, dejando visible solo ENE. Éste fue el síntoma más confuso.
+> 5. **No toques la propiedad "Diseño"** de la galería una vez creada: cambiarla **elimina
+>    los controles internos** que ya hubieras agregado.
+>
+> Medidas de referencia que funcionaron: `galMeses` X=240, Y=0, Ancho=900, Alto=37,
+> TemplateSize=75, WrapCount=1; `lblCelda` X=0, Y=0, Ancho=70, Alto=30.
+
+- Para que las celdas sepan a qué especialidad pertenecen, nombra el ámbito de la galería
+  externa: `galEsp.Items = Especialidades As Esp`. Dentro de galMeses se usa `Esp.Title`.
 
 **celda** (etiqueta `lblCelda` dentro de galMeses):
+- `lblCelda.Text = ThisItem.Etq`
 - `lblCelda.Fill =`
 ```powerfx
 With(
     { reg: LookUp(colMant,
-        Especialidad.Value = ThisItem.EspTitle && Month(FechaProgramada) = ThisItem.Mes) },
+        Especialidad.Value = Esp.Title && Month(FechaProgramada) = ThisItem.N) },
     Switch( reg.Estado.Value,
         "Ejecutado",     clrEjecutado,
         "En Ejecución",  clrEjecucion,
@@ -105,7 +124,7 @@ With(
 ```powerfx
 With(
     { reg: LookUp(colMant,
-        Especialidad.Value = ThisItem.EspTitle && Month(FechaProgramada) = ThisItem.Mes) },
+        Especialidad.Value = Esp.Title && Month(FechaProgramada) = ThisItem.N) },
     If( !IsBlank(reg.ID),
         Navigate(scrDetalle, ScreenTransition.Cover, { locMant: reg })
     )
