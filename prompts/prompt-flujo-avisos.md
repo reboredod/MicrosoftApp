@@ -29,6 +29,17 @@ separador, siempre, sin importar el idioma de la interfaz.
 
 Copia las expresiones EXACTAMENTE como te las doy, con comas. No las cambies.
 
+SI EL EDITOR RECHAZA UNA EXPRESIÓN ("Hay un problema en esta expresión"), casi siempre
+es una de estas dos causas, no un error de la expresión en sí:
+
+  a) PARÉNTESIS DUPLICADOS. El editor autocompleta el paréntesis de cierre mientras
+     escribes, así que te quedan `))` de más. Solución: BORRA todo el campo (Ctrl+A,
+     Suprimir), PEGA la expresión completa de una vez (no la escribas carácter a
+     carácter) y revisa que el número de paréntesis que abren y cierran coincida.
+  b) COMILLAS CURVAS. Deben ser comillas rectas ' ' (apóstrofe simple), no ' '.
+     Se ven casi idénticas en pantalla. Si dudas, borra las comillas y reescríbelas
+     a mano desde el teclado.
+
 ════════════════════════════════════════
 DATOS DEL ENTORNO
 ════════════════════════════════════════
@@ -49,9 +60,10 @@ CÓMO TRABAJAR EN POWER AUTOMATE
 
 - Para escribir una EXPRESIÓN: haz clic en el campo, se abre el panel de contenido
   dinámico; elige la pestaña "Expresión" (fx), escribe la expresión y presiona Aceptar.
-- Para RENOMBRAR una acción: clic en los tres puntos (…) de la acción → "Cambiar
-  nombre". RENOMBRA CADA ACCIÓN JUSTO DESPUÉS DE CREARLA, antes de pasar a la
-  siguiente: las expresiones posteriores dependen de esos nombres exactos.
+- Para RENOMBRAR una acción: en el diseñador NUEVO (panel lateral) se hace clic sobre
+  el TÍTULO de la acción en el panel y se edita ahí; en el clásico está en los tres
+  puntos (…) → "Cambiar nombre". RENOMBRA CADA ACCIÓN JUSTO DESPUÉS DE CREARLA, antes
+  de pasar a la siguiente: las expresiones posteriores dependen de esos nombres exactos.
 - Puede que el editor sea el "nuevo" (panel lateral) o el "clásico" (tarjetas
   verticales). Adáptate al que veas, pero no cambies el orden de las acciones.
 - Si una acción pide elegir conexión, usa la cuenta ya conectada.
@@ -84,18 +96,18 @@ PASO 3 — Variable: destinatarios
     Valor  = david.reboredo@outlook.com
 
 PASO 4 — Fecha de hoy
-  - Nueva acción → busca "Redactar" (en inglés: Compose).
+  - Nueva acción → busca "Redactar" (está bajo "Operación de datos"; en inglés: Compose).
   - RENOMBRA la acción a:  Hoy
   - En Entradas, pestaña Expresión, escribe:
 
-formatDateTime(convertFromUtc(utcNow(),'Pacific SA Standard Time'),'yyyy-MM-dd')
+utcNow('yyyy-MM-dd')
 
 PASO 5 — Fecha límite
   - Nueva acción → "Redactar".
   - RENOMBRA la acción a:  Limite
   - En Entradas, pestaña Expresión, escribe:
 
-formatDateTime(addDays(convertFromUtc(utcNow(),'Pacific SA Standard Time'),variables('varDiasAnticipacion')),'yyyy-MM-dd')
+addDays(utcNow(),variables('varDiasAnticipacion'),'yyyy-MM-dd')
 
 PASO 6 — Buscar los mantenimientos
   - Nueva acción → busca el conector SharePoint → acción "Obtener elementos".
