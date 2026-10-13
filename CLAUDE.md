@@ -47,6 +47,12 @@ Usuario → Power App (captura/consulta)
   - `deploy/Provision-SharePoint.ps1` — provisiona listas, biblioteca, columnas, índices, carpetas y catálogo (PnP PowerShell, idempotente). `deploy/especialidades-catalogo.csv` para carga manual. `deploy/README-despliegue.md`.
   - `flows/README-flujos.md` — 4 flujos de Power Automate con expresiones exactas.
   - `app/App-BuildKit.md` — app canvas de 5 pantallas con fórmulas Power Fx.
-- **Pendiente / a validar por David**: URL del sitio SharePoint (parámetro `-SiteUrl`), ejecutar el script, y validar meses programados con proveedores.
+- **Construido y funcionando en producción (octubre 2026)**:
+  - SharePoint en `https://cchccl.sharepoint.com/sites/Administracion`: listas `Especialidades` (19) y `Mantenimientos2026` (78 preventivos cargados), biblioteca `DocumentosMantenimiento`, columna `Sede` para multi-sede.
+  - App canvas **"Mantenimiento CChC"**: `scrCronograma` (Gantt con 6 colores de estado), `scrDetalle` (formulario + botones Patch para En ejecución / Ejecutado / Reprogramar), `scrLista` (filtro por estado + buscador).
+  - Flujo **FLX-AvisoProgramacion**: correo semanal (lunes 08:00) con los preventivos de los próximos 30 días, tabla con estilos CChC.
+- **Pendiente**: `FLX-GuardarDocumento` (subida de documentos desde la app), cargar proveedores en Mantenimientos2026, revisar registro duplicado (la lista marca 79 en vez de 78), completar `Sede` en todos los registros.
+- **Método de trabajo**: David construye en su navegador. Claude entrega prompts de hand-off (en `prompts/`) que él ejecuta con otro Claude vía la extensión de Chrome, o instrucciones paso a paso. Claude NO tiene acceso al navegador ni al tenant.
+- **Trampas conocidas** (documentadas en `app/App-BuildKit.md` y `flows/README-flujos.md`): Power Apps en español usa `;` y `;;` como separadores; Power Automate siempre usa comas; el validador de expresiones de Power Automate rechaza `variables()` sin `int()` y `length(body(...))`; su botón "Agregar" a veces requiere un segundo clic.
 - **Límite del entorno**: Claude NO tiene acceso al tenant M365 del usuario (no puede provisionar directamente); entrega activos desplegables (scripts + kits de construcción).
 - Rama de trabajo: `claude/microsoft-ecosystem-expert-bhafkp`.

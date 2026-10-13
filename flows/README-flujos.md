@@ -156,6 +156,35 @@ mantenimiento, escribe metadatos y devuelve el enlace.
 > mantención aparece en varios correos semanales seguidos hasta que pasa su fecha. Si
 > molesta, agregar una columna `Coordinado` (Sí/No) a Mantenimientos2026 y sumarla al
 > filtro ODATA (`and Coordinado ne 1`).
+>
+> **Estructura final en producción:**
+> ```
+> Periodicidad (lunes 08:00 Santiago)
+> varDias  →  varCorreos  →  Hoy  →  Limite  →  ObtenerMantenimientos  →  Condición
+>                                                   ├─ True:  SeleccionarCampos
+>                                                   │         TablaHTML
+>                                                   │         TablaConEstilo
+>                                                   │         EnviarAviso
+>                                                   └─ False: (vacía)
+> ```
+>
+> `SeleccionarCampos` mapea solo 3 columnas (Especialidad, Fecha, Proveedor). Se quitó
+> una cuarta columna con el Título porque repetía el nombre de la especialidad.
+>
+> **`TablaConEstilo`** (acción "Redactar") da formato a la tabla sin tocar el HTML del
+> correo. Patrón recomendado: la acción "Crear tabla HTML" genera etiquetas sin estilos,
+> así que se inyectan con `replace()` en una acción aparte, y en el Cuerpo del correo se
+> referencia esa salida en vez de la de `TablaHTML`. Así los estilos se editan en un solo
+> lugar y el cuerpo del correo no se toca:
+>
+> ```
+> replace(replace(replace(body('TablaHTML'),'<table>','<table style="border-collapse:collapse;width:100%;font-family:Segoe UI,Arial,sans-serif;font-size:13px">'),'<th>','<th style="background:#003366;color:#ffffff;text-align:left;padding:8px 10px;border:1px solid #d0d0d0">'),'<td>','<td style="padding:8px 10px;border:1px solid #d0d0d0">')
+> ```
+>
+> Nota de edición: el campo **Cuerpo** del correo guarda las referencias como *chips*
+> dinámicos, no como texto `@{...}` editable. Para cambiar qué tabla se muestra, se borra
+> un chip y se inserta el otro desde el panel de contenido dinámico — nunca escribiendo
+> la expresión a mano en ese campo.
 **Tipo:** Programado (Recurrencia). Envía un correo con los mantenimientos **preventivos**
 que se acercan, para que los coordines/agendes con el proveedor con anticipación.
 **Diseñado para que lo configures a tu gusto:** todo lo ajustable está en el paso 2
