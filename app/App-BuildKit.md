@@ -109,6 +109,10 @@ ClearCollect(
   se refiere al mes.
 - **Emparejar por ID, no por texto:** `Especialidad.Id = Esp.ID` es más robusto que comparar
   títulos (inmune a tildes y espacios sobrantes).
+- **Filtrar SIEMPRE por año además del mes.** El `LookUp` de la celda debe incluir
+  `&& Year(FechaProgramada) = varAnio`. Sin esa condición, cuando exista el plan de otro
+  año sus registros también harán match (solo se compara el mes) y se mezclarán en la
+  vista. Aplica tanto al `Fill` como al `OnSelect` de `lblCelda`.
 - **Diagnóstico rápido de colores:** si un color no calza, pon temporalmente
   `lblCelda.Text = LookUp(colMant, Especialidad.Id = Esp.ID && Month(FechaProgramada) = ThisItem.N, Estado.Value)`
   para ver en pantalla el estado que realmente encuentra cada celda. Un color que no aparece
