@@ -107,7 +107,13 @@ PASO 5 — Fecha límite
   - RENOMBRA la acción a:  Limite
   - En Entradas, pestaña Expresión, escribe:
 
-addDays(utcNow(),variables('varDiasAnticipacion'),'yyyy-MM-dd')
+addDays(utcNow(),int(variables('varDiasAnticipacion')),'yyyy-MM-dd')
+
+  (El `int()` es necesario: el validador del diseñador nuevo tipa `variables()` como
+   "cualquiera" y `addDays` exige un entero. Sin el cast, rechaza la expresión.
+   Si aun así la rechaza, usa el literal `addDays(utcNow(),15,'yyyy-MM-dd')` y recuerda
+   que entonces el número 15 queda también en el cuerpo del correo del PASO 10: para
+   cambiar los días de anticipación habría que editar ambos lugares.)
 
 PASO 6 — Buscar los mantenimientos
   - Nueva acción → busca el conector SharePoint → acción "Obtener elementos".
