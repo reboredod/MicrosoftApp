@@ -186,6 +186,14 @@ Filter('DocumentosMantenimiento', IDMantenimiento = locMant.ID)
 - `icoAbrir.OnSelect = Launch(ThisItem.'Vínculo al elemento')`
 
 **Botones de acción:**
+
+> ⚠️ **Los tres botones deben guardar las Observaciones**, no solo "Marcar ejecutado".
+> Protégelas de un borrado accidental cuando el campo va vacío:
+> `Observaciones: If(IsBlank(txtObservaciones.Text), varMant.Observaciones, txtObservaciones.Text)`
+> y añade `Reset(txtObservaciones)` después del Patch para que el texto no se arrastre
+> al siguiente mantenimiento. Variante con bitácora acumulativa (una línea por anotación,
+> con fecha):
+> `varMant.Observaciones & Char(10) & Text(Today(), "dd-mm-yyyy") & ": " & txtObservaciones.Text`
 ```powerfx
 // btnEnEjecucion.OnSelect
 Patch(Mantenimientos2026, locMant, { Estado: {Value:"En Ejecución"} });
