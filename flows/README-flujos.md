@@ -121,6 +121,41 @@ mantenimiento, escribe metadatos y devuelve el enlace.
 ---
 
 ## FLX-AvisoProgramacion  ⭐ (aviso anticipado para programar preventivos)
+
+> ✅ **Construido y probado en el entorno CChC (octubre 2026).** Notas del diseñador
+> NUEVO de Power Automate (panel lateral), aprendidas durante la construcción:
+>
+> - **Las expresiones usan COMA**, no `;`. El separador `;` es solo de Power Apps en
+>   español; el lenguaje de expresiones de Power Automate es independiente del idioma.
+> - **El validador es estricto con los tipos.** `variables()` se tipa como "cualquiera",
+>   así que `addDays(utcNow(), variables('x'), ...)` es rechazada: hay que castear con
+>   `int(variables('x'))`.
+> - **`length()` sobre `body()` falla**; usa la forma
+>   `length(outputs('<Accion>')?['body/value'])`.
+> - **El botón "Agregar" del editor de expresiones marca error en el primer clic pero
+>   inserta la expresión en el segundo** (con el panel aún abierto). Varios "errores"
+>   no son reales: vuelve a pulsar Agregar antes de dar una expresión por rechazada.
+> - **Renombrar una acción** en el diseñador nuevo se hace haciendo clic en su título
+>   en el panel, no desde el menú `⋯`.
+> - **"Redactar" (Compose)** está en el buscador bajo "Operación de datos".
+> - Conviene **guardar cada 2 o 3 acciones**: si la conexión de un conector expira,
+>   el guardado se rechaza y se pierde lo no guardado.
+>
+> Valores finales en producción: recurrencia **lunes 08:00 (Santiago)**,
+> `varDiasAnticipacion = 30`, `varDestinatarios = dreboredo@cchc.cl`.
+> Se usa el correo corporativo porque el envío automatizado a dominios externos puede
+> estar bloqueado por política de la organización.
+>
+> Expresiones que funcionaron (más simples que las originales; se omitió la conversión
+> de zona horaria porque con una ventana de 30 días unas horas son irrelevantes):
+> - `Hoy` → `utcNow('yyyy-MM-dd')`
+> - `Limite` → `addDays(utcNow(),int(variables('varDiasAnticipacion')),'yyyy-MM-dd')`
+> - Condición → `length(outputs('ObtenerMantenimientos')?['body/value'])` **es mayor que** `0`
+>
+> Mejora pendiente: como el plan tiene las mantenciones el día 5 de cada mes, una misma
+> mantención aparece en varios correos semanales seguidos hasta que pasa su fecha. Si
+> molesta, agregar una columna `Coordinado` (Sí/No) a Mantenimientos2026 y sumarla al
+> filtro ODATA (`and Coordinado ne 1`).
 **Tipo:** Programado (Recurrencia). Envía un correo con los mantenimientos **preventivos**
 que se acercan, para que los coordines/agendes con el proveedor con anticipación.
 **Diseñado para que lo configures a tu gusto:** todo lo ajustable está en el paso 2
