@@ -7,6 +7,12 @@ lo que ya existe, más **un botón nuevo**. No se crean pantallas.
 > largas y el agente escribe a mano. Pegar es más rápido y sin riesgo de tipeo.
 >
 > Recuerda: separadores **`;`** entre argumentos y **`;;`** entre instrucciones.
+>
+> ⚠️ **Sintaxis de `AddColumns`:** esta app usa la versión nueva de Power Fx, donde el
+> nombre de la columna nueva va **como identificador, SIN comillas**
+> (`AddColumns(origen; EstadoReal; ...)`). Con comillas da el error *"Nombre de
+> identificador esperado"*. Donde la columna se **lee** (`Filter`, `Switch`, `ThisItem.`)
+> siempre va sin comillas.
 
 ---
 
@@ -41,7 +47,7 @@ Set(clrCancelado; RGBA(120; 120; 120; 1));;
 Set(clrVacio; RGBA(245; 245; 245; 1));;
 Set(clrCorporativo; RGBA(0; 51; 102; 1));;
 Set(varAnio; 2026);;
-ClearCollect(colMant; AddColumns(Mantenimientos2026; "EstadoReal"; If(FechaProgramada < Today() && (Estado.Value = "Programado" || Estado.Value = "Reprogramado"); "Atrasado"; Estado.Value)));;
+ClearCollect(colMant; AddColumns(Mantenimientos2026; EstadoReal; If(FechaProgramada < Today() && (Estado.Value = "Programado" || Estado.Value = "Reprogramado"); "Atrasado"; Estado.Value)));;
 ClearCollect(colMeses; Table({N:1; Etq:"ENE"}; {N:2; Etq:"FEB"}; {N:3; Etq:"MAR"}; {N:4; Etq:"ABR"}; {N:5; Etq:"MAY"}; {N:6; Etq:"JUN"}; {N:7; Etq:"JUL"}; {N:8; Etq:"AGO"}; {N:9; Etq:"SEP"}; {N:10; Etq:"OCT"}; {N:11; Etq:"NOV"}; {N:12; Etq:"DIC"}))
 ```
 
@@ -50,7 +56,7 @@ Después: clic derecho en **App → Ejecutar OnStart**.
 ### A2. `btnActualizar` → `OnSelect`  (en scrCronograma)
 
 ```
-ClearCollect(colMant; AddColumns(Mantenimientos2026; "EstadoReal"; If(FechaProgramada < Today() && (Estado.Value = "Programado" || Estado.Value = "Reprogramado"); "Atrasado"; Estado.Value)))
+ClearCollect(colMant; AddColumns(Mantenimientos2026; EstadoReal; If(FechaProgramada < Today() && (Estado.Value = "Programado" || Estado.Value = "Reprogramado"); "Atrasado"; Estado.Value)))
 ```
 
 ### A3. `lblCelda` → `Fill`  (dentro de GalMeses)
@@ -110,17 +116,17 @@ limpian el campo después.
 
 ### B1. `btnEnEjecucion` → `OnSelect`
 ```
-Patch(Mantenimientos2026; LookUp(Mantenimientos2026; ID = varMant.ID); {Estado: {Value: "En Ejecución"}; Observaciones: If(IsBlank(txtObservaciones.Text); varMant.Observaciones; txtObservaciones.Text)});; ClearCollect(colMant; AddColumns(Mantenimientos2026; "EstadoReal"; If(FechaProgramada < Today() && (Estado.Value = "Programado" || Estado.Value = "Reprogramado"); "Atrasado"; Estado.Value)));; Set(varMant; LookUp(colMant; ID = varMant.ID));; Reset(txtObservaciones);; Notify("Marcado como En Ejecución"; NotificationType.Success)
+Patch(Mantenimientos2026; LookUp(Mantenimientos2026; ID = varMant.ID); {Estado: {Value: "En Ejecución"}; Observaciones: If(IsBlank(txtObservaciones.Text); varMant.Observaciones; txtObservaciones.Text)});; ClearCollect(colMant; AddColumns(Mantenimientos2026; EstadoReal; If(FechaProgramada < Today() && (Estado.Value = "Programado" || Estado.Value = "Reprogramado"); "Atrasado"; Estado.Value)));; Set(varMant; LookUp(colMant; ID = varMant.ID));; Reset(txtObservaciones);; Notify("Marcado como En Ejecución"; NotificationType.Success)
 ```
 
 ### B2. `btnEjecutado` → `OnSelect`
 ```
-Patch(Mantenimientos2026; LookUp(Mantenimientos2026; ID = varMant.ID); {Estado: {Value: "Ejecutado"}; FechaEjecucion: dpkFechaAccion.SelectedDate; Observaciones: If(IsBlank(txtObservaciones.Text); varMant.Observaciones; txtObservaciones.Text)});; ClearCollect(colMant; AddColumns(Mantenimientos2026; "EstadoReal"; If(FechaProgramada < Today() && (Estado.Value = "Programado" || Estado.Value = "Reprogramado"); "Atrasado"; Estado.Value)));; Set(varMant; LookUp(colMant; ID = varMant.ID));; Reset(txtObservaciones);; Notify("Mantenimiento marcado como Ejecutado"; NotificationType.Success)
+Patch(Mantenimientos2026; LookUp(Mantenimientos2026; ID = varMant.ID); {Estado: {Value: "Ejecutado"}; FechaEjecucion: dpkFechaAccion.SelectedDate; Observaciones: If(IsBlank(txtObservaciones.Text); varMant.Observaciones; txtObservaciones.Text)});; ClearCollect(colMant; AddColumns(Mantenimientos2026; EstadoReal; If(FechaProgramada < Today() && (Estado.Value = "Programado" || Estado.Value = "Reprogramado"); "Atrasado"; Estado.Value)));; Set(varMant; LookUp(colMant; ID = varMant.ID));; Reset(txtObservaciones);; Notify("Mantenimiento marcado como Ejecutado"; NotificationType.Success)
 ```
 
 ### B3. `btnReprogramar` → `OnSelect`
 ```
-Patch(Mantenimientos2026; LookUp(Mantenimientos2026; ID = varMant.ID); {Estado: {Value: "Reprogramado"}; FechaProgramada: dpkFechaAccion.SelectedDate; Observaciones: If(IsBlank(txtObservaciones.Text); varMant.Observaciones; txtObservaciones.Text)});; ClearCollect(colMant; AddColumns(Mantenimientos2026; "EstadoReal"; If(FechaProgramada < Today() && (Estado.Value = "Programado" || Estado.Value = "Reprogramado"); "Atrasado"; Estado.Value)));; Set(varMant; LookUp(colMant; ID = varMant.ID));; Reset(txtObservaciones);; Notify("Mantenimiento reprogramado"; NotificationType.Success)
+Patch(Mantenimientos2026; LookUp(Mantenimientos2026; ID = varMant.ID); {Estado: {Value: "Reprogramado"}; FechaProgramada: dpkFechaAccion.SelectedDate; Observaciones: If(IsBlank(txtObservaciones.Text); varMant.Observaciones; txtObservaciones.Text)});; ClearCollect(colMant; AddColumns(Mantenimientos2026; EstadoReal; If(FechaProgramada < Today() && (Estado.Value = "Programado" || Estado.Value = "Reprogramado"); "Atrasado"; Estado.Value)));; Set(varMant; LookUp(colMant; ID = varMant.ID));; Reset(txtObservaciones);; Notify("Mantenimiento reprogramado"; NotificationType.Success)
 ```
 
 ### B4. Botón nuevo: `btnCancelar`
@@ -136,7 +142,7 @@ y usa **Insertar → Botón**. Renómbralo **`btnCancelar`**.
 
 **OnSelect:**
 ```
-Patch(Mantenimientos2026; LookUp(Mantenimientos2026; ID = varMant.ID); {Estado: {Value: "Cancelado"}; Observaciones: If(IsBlank(txtObservaciones.Text); varMant.Observaciones; txtObservaciones.Text)});; ClearCollect(colMant; AddColumns(Mantenimientos2026; "EstadoReal"; If(FechaProgramada < Today() && (Estado.Value = "Programado" || Estado.Value = "Reprogramado"); "Atrasado"; Estado.Value)));; Set(varMant; LookUp(colMant; ID = varMant.ID));; Reset(txtObservaciones);; Notify("Mantención cancelada"; NotificationType.Warning)
+Patch(Mantenimientos2026; LookUp(Mantenimientos2026; ID = varMant.ID); {Estado: {Value: "Cancelado"}; Observaciones: If(IsBlank(txtObservaciones.Text); varMant.Observaciones; txtObservaciones.Text)});; ClearCollect(colMant; AddColumns(Mantenimientos2026; EstadoReal; If(FechaProgramada < Today() && (Estado.Value = "Programado" || Estado.Value = "Reprogramado"); "Atrasado"; Estado.Value)));; Set(varMant; LookUp(colMant; ID = varMant.ID));; Reset(txtObservaciones);; Notify("Mantención cancelada"; NotificationType.Warning)
 ```
 
 ---

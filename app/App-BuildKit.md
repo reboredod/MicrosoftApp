@@ -3,6 +3,11 @@
 App **canvas** (formato tableta), conectada a SharePoint estándar. No requiere Dataverse
 ni licencia premium. Todas las fórmulas están listas para copiar y pegar.
 
+> ⚠️ **`AddColumns` con identificador, no cadena.** En la versión nueva de Power Fx el
+> nombre de la columna que se agrega va sin comillas: `AddColumns(origen, EstadoReal, …)`.
+> Escribirlo como `"EstadoReal"` produce *"Nombre de identificador esperado"* y
+> *"AddColumns tiene argumentos no válidos"*. Donde la columna se lee va siempre sin comillas.
+
 > ⚠️ **Separador de fórmulas según idioma del editor.** Las fórmulas de este documento
 > usan la sintaxis **en inglés** (coma `,` entre argumentos, punto y coma `;` entre
 > instrucciones). Si tu Power Apps está en **español** (u otro idioma con coma decimal),
